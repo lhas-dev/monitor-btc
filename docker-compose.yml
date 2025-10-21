@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  btc-monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: btc-monitor
+    restart: unless-stopped
+
+    # Mount config and logs
+    volumes:
+      - ./config.py:/app/config.py:ro  # Read-only config
+      - ./signals_log.json:/app/signals_log.json  # Persistent signal logs
+      - ./logs:/app/logs  # Application logs
+
+    # Load environment variables from .env file
+    env_file:
+      - .env
+
+    # Environment variables (optional - can override .env values)
+    environment:
+      - TZ=America/Sao_Paulo  # Set your timezone
+      # Uncomment to override .env values:
+      # - MIN_DROP=5.0
+      # - CHECK_INTERVAL=300
+      # - TELEGRAM_ENABLED=true
+
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    # Network mode
+    network_mode: bridge
+
+    # Resource limits (optional)
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('https://api.binance.com/api/v3/ping', timeout=5)"]
+      interval: 5m
+      timeout: 10s
+      retries: 3
+      start_period: 30s

@@ -1,48 +1,56 @@
-# ⚙️ CONFIGURAÇÕES DO MONITOR BTC/BRL
-# Edite os valores abaixo conforme sua estratégia
+# ⚙️ BTC/BRL MONITOR CONFIGURATION
+# Edit the values below according to your strategy
 
-# === PARÂMETROS DE DETECÇÃO ===
+# === DETECTION PARAMETERS ===
 
-# Queda mínima em 24h para gerar alerta (%)
-QUEDA_MINIMA = 5.0
+# Minimum 24h drop to trigger alert (%)
+MIN_DROP = 5.0
 
-# Distância da média móvel para alertar (%)
-# Ex: 3.0 = alertar quando preço estiver 3% abaixo da média
-DISTANCIA_MA = 3.0
+# Distance from moving average to trigger alert (%)
+# Example: 3.0 = alert when price is 3% below average
+MA_DISTANCE = 3.0
 
-# RSI abaixo deste valor indica sobrevendido
+# RSI below this value indicates oversold condition
 RSI_OVERSOLD = 30
 
-# Período da média móvel (dias)
-PERIODO_MA = 7
+# Moving average period (days)
+MA_PERIOD = 7
 
 
-# === GESTÃO DE RISCO ===
+# === RISK MANAGEMENT ===
 
-# Stop loss sugerido (%)
+# Suggested stop loss (%)
 STOP_LOSS = 3.0
 
-# Take profit mínimo para considerar trade válido (%)
+# Minimum take profit to consider valid trade (%)
 TAKE_PROFIT = 2.0
 
 
-# === MONITORAMENTO ===
+# === MONITORING ===
 
-# Intervalo entre verificações (segundos)
-# 300 = 5 minutos
-# 60 = 1 minuto
-# 3600 = 1 hora
-INTERVALO_CHECK = 300
+# Interval between checks (seconds)
+# 300 = 5 minutes
+# 60 = 1 minute
+# 3600 = 1 hour
+CHECK_INTERVAL = 300
 
-# Dias de histórico para análise
-DIAS_HISTORICO = 90
+# Days of historical data for analysis
+HISTORICAL_DAYS = 90
 
 
-# === SISTEMA DE PONTUAÇÃO ===
-# O monitor soma pontos para cada sinal detectado:
-# - Queda 24h: 3 pontos
-# - Abaixo da MA: 2 pontos
-# - RSI oversold: 2 pontos
-# - Próximo de suporte: 1 ponto
-# 
-# ENTRADA SUGERIDA: 3+ pontos
+# === TELEGRAM NOTIFICATION ===
+# Get your bot token from @BotFather on Telegram
+# Get your chat ID by messaging your bot and checking https://api.telegram.org/bot<TOKEN>/getUpdates
+TELEGRAM_BOT_TOKEN = ""  # Add your bot token here
+TELEGRAM_CHAT_ID = ""     # Add your chat ID here
+TELEGRAM_ENABLED = True  # Set to True to enable notifications
+
+
+# === SCORING SYSTEM ===
+# The monitor adds points for each detected signal:
+# - 24h drop: 3 points
+# - Below MA: 2 points
+# - RSI oversold: 2 points
+# - Near support: 1 point
+#
+# SUGGESTED ENTRY: 3+ points

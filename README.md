@@ -1,117 +1,211 @@
-# 🤖 Monitor Automatizado BTC/BRL - Binance
+# 🤖 Automated BTC/BRL Monitor - Binance
 
-Sistema automatizado para identificar oportunidades de compra no Bitcoin (estratégia "Buy the Dip").
+Automated system to identify Bitcoin buying opportunities (Buy the Dip strategy).
 
-## 🎯 O que faz?
+## 🎯 What does it do?
 
-✅ Monitora o preço do BTC/BRL na Binance em tempo real  
-✅ Detecta quedas significativas automaticamente  
-✅ Calcula suportes e resistências baseados em histórico  
-✅ Analisa indicadores técnicos (Média Móvel, RSI)  
-✅ Sugere preço de entrada, alvo e stop loss  
-✅ Sistema de pontuação para validar sinais  
-✅ Salva alertas em arquivo JSON  
+✅ Monitors BTC/BRL price on Binance in real-time
+✅ Automatically detects significant drops
+✅ Calculates support and resistance based on historical data
+✅ Analyzes technical indicators (Moving Average, RSI)
+✅ Suggests entry price, target, and stop loss
+✅ Scoring system to validate signals
+✅ Saves alerts to JSON file
+✅ **Sends notifications via Telegram when signals are detected**
 
-## 📋 Requisitos
+## 📋 Requirements
 
-- Python 3.7 ou superior
-- Conexão com internet
+- Python 3.7 or higher
+- Internet connection
+- Telegram account (for notifications)
 
-## 🚀 Instalação
+## 🚀 Installation
 
-### 1. Instalar bibliotecas necessárias
+### Option 1: Docker (Recommended for Production)
 
-Abra o terminal/prompt e execute:
+The easiest way to run the monitor is using Docker:
+
+#### Prerequisites
+- Docker and Docker Compose installed ([Get Docker](https://docs.docker.com/get-docker/))
+
+#### Quick Start
+1. **Configure your settings:**
+   ```bash
+   # Edit config.py and add your Telegram credentials
+   nano config.py
+   ```
+
+2. **Build and run with Docker Compose:**
+   ```bash
+   docker-compose up -d
+   ```
+
+3. **Check logs:**
+   ```bash
+   docker-compose logs -f btc-monitor
+   ```
+
+4. **Stop the monitor:**
+   ```bash
+   docker-compose down
+   ```
+
+#### Docker Commands
 
 ```bash
-pip install requests pandas numpy
+# Build the image
+docker-compose build
+
+# Start the monitor (detached mode)
+docker-compose up -d
+
+# View logs in real-time
+docker-compose logs -f
+
+# Restart the monitor
+docker-compose restart
+
+# Stop the monitor
+docker-compose stop
+
+# Remove container and volumes
+docker-compose down -v
 ```
 
-### 2. Baixar os arquivos
+### Option 2: Manual Python Installation
 
-Coloque os seguintes arquivos na mesma pasta:
-- `monitor_btc.py` (arquivo principal)
-- `config.py` (configurações)
+#### 1. Install required libraries
 
-## ⚙️ Configuração
+Open terminal/command prompt and run:
 
-Edite o arquivo `config.py` para ajustar sua estratégia:
+```bash
+pip install -r requirements.txt
+```
+
+Or manually:
+
+```bash
+pip install requests pandas numpy python-telegram-bot
+```
+
+#### 2. Download files
+
+Place the following files in the same folder:
+- `monitor_btc.py` (main file)
+- `config.py` (configuration)
+- `requirements.txt` (dependencies)
+
+## ⚙️ Configuration
+
+### Basic Configuration
+
+Edit `config.py` file to adjust your strategy:
 
 ```python
-QUEDA_MINIMA = 5.0        # Alertar quando cair 5% em 24h
-DISTANCIA_MA = 3.0        # Alertar quando ficar 3% abaixo da média
-RSI_OVERSOLD = 30         # RSI abaixo de 30 = sobrevendido
-PERIODO_MA = 7            # Média móvel de 7 dias
-STOP_LOSS = 3.0           # Stop loss de 3%
-TAKE_PROFIT = 2.0         # Alvo mínimo de 2%
-INTERVALO_CHECK = 300     # Verificar a cada 5 minutos
+MIN_DROP = 5.0              # Alert when price drops 5% in 24h
+MA_DISTANCE = 3.0           # Alert when price is 3% below average
+RSI_OVERSOLD = 30           # RSI below 30 = oversold
+MA_PERIOD = 7               # 7-day moving average
+STOP_LOSS = 3.0             # 3% stop loss
+TAKE_PROFIT = 2.0           # Minimum 2% target
+CHECK_INTERVAL = 300        # Check every 5 minutes
 ```
 
-## 🏃 Como Usar
+### Telegram Setup (Optional but Recommended)
 
-### Executar o monitor:
+To receive notifications on your phone:
+
+1. **Create a Telegram Bot:**
+   - Open Telegram and search for `@BotFather`
+   - Send `/newbot` command
+   - Follow instructions and choose a name for your bot
+   - Save the **bot token** (looks like: `123456789:ABCdefGHIjklMNOpqrsTUVwxyz`)
+
+2. **Get your Chat ID:**
+   - Send a message to your bot
+   - Open this URL in your browser (replace TOKEN with your bot token):
+     ```
+     https://api.telegram.org/botTOKEN/getUpdates
+     ```
+   - Look for `"chat":{"id":123456789}` in the response
+   - Save this **chat ID** number
+
+3. **Configure in config.py:**
+   ```python
+   TELEGRAM_BOT_TOKEN = "123456789:ABCdefGHIjklMNOpqrsTUVwxyz"
+   TELEGRAM_CHAT_ID = "123456789"
+   TELEGRAM_ENABLED = True
+   ```
+
+## 🏃 How to Use
+
+### Run the monitor:
 
 ```bash
 python monitor_btc.py
 ```
 
-### O que você verá:
+### What you'll see:
 
 ```
-🤖 Monitor BTC/BRL Iniciado!
-📡 Verificando a cada 300 segundos...
-⚙️  Configurações: Queda mínima 5.0%, RSI < 30
+🤖 BTC/BRL Monitor Started!
+📡 Checking every 300 seconds...
+⚙️  Settings: Min drop 5.0%, RSI < 30
+✅ Telegram notifications enabled
 
 ================================================================================
 ⏰ 2025-10-20 15:30:45
-💰 PREÇO ATUAL: R$ 590.234,00
+💰 CURRENT PRICE: R$ 590,234.00
 ================================================================================
 
-📊 INDICADORES:
-   MA7: R$ 598.500,00 (-1.38%)
+📊 INDICATORS:
+   MA7: R$ 598,500.00 (-1.38%)
    RSI(14): 35.2
 
-🚨 SINAIS DETECTADOS (Score: 5):
-   🔴 QUEDA 24H: -5.80% (mínimo: -5.0%)
-   🔴 ABAIXO DA MA7: -3.20% (mínimo: -3.0%)
-   🟡 PRÓXIMO DO SUPORTE: R$ 588.000
+🚨 DETECTED SIGNALS (Score: 5):
+   🔴 24H DROP: -5.80% (minimum: -5.0%)
+   🔴 BELOW MA7: -3.20% (minimum: -3.0%)
+   🟡 NEAR SUPPORT: R$ 588,000
 
-📍 NÍVEIS IMPORTANTES:
-   Resistências: R$ 605.000, R$ 600.000, R$ 595.000
-   Suportes: R$ 590.000, R$ 585.000, R$ 580.000
+📍 KEY LEVELS:
+   Resistances: R$ 605,000, R$ 600,000, R$ 595,000
+   Supports: R$ 590,000, R$ 585,000, R$ 580,000
 
-                  🟢 OPORTUNIDADE DE ENTRADA DETECTADA! 🟢                  
+                  🟢 ENTRY OPPORTUNITY DETECTED! 🟢
 
-💡 SUGESTÃO DE TRADE:
-   🔹 ENTRADA: R$ 590.234,00
-   🎯 ALVO: R$ 600.000,00 (+1.65%)
-   🛑 STOP: R$ 572.527,00 (-3.00%)
+💡 TRADE SUGGESTION:
+   🔹 ENTRY: R$ 590,234.00
+   🎯 TARGET: R$ 600,000.00 (+1.65%)
+   🛑 STOP: R$ 572,527.00 (-3.00%)
    📊 RISK/REWARD: 1:0.55
+
+✅ Telegram notification sent successfully
+💾 Signal saved to signals_log.json
 ================================================================================
 ```
 
-### Parar o monitor:
+### Stop the monitor:
 
-Pressione `Ctrl + C` no terminal.
+Press `Ctrl + C` in the terminal.
 
-## 📊 Sistema de Pontuação
+## 📊 Scoring System
 
-O monitor atribui pontos para cada sinal:
+The monitor assigns points for each signal:
 
-| Sinal | Pontos | Descrição |
-|-------|--------|-----------|
-| Queda 24h | 3 | Preço caiu mais que o mínimo configurado |
-| Abaixo da MA | 2 | Preço está abaixo da média móvel |
-| RSI Oversold | 2 | RSI indica sobrevendido |
-| Próximo de Suporte | 1 | Preço está perto de suporte histórico |
+| Signal | Points | Description |
+|--------|--------|-------------|
+| 24h Drop | 3 | Price dropped more than configured minimum |
+| Below MA | 2 | Price is below moving average |
+| RSI Oversold | 2 | RSI indicates oversold |
+| Near Support | 1 | Price is close to historical support |
 
-**✅ SINAL DE ENTRADA:** Quando somar 3+ pontos
+**✅ ENTRY SIGNAL:** When score reaches 3+ points
 
-## 📁 Arquivos Gerados
+## 📁 Generated Files
 
 ### `signals_log.json`
 
-Todos os sinais de entrada são salvos automaticamente neste arquivo:
+All entry signals are automatically saved to this file:
 
 ```json
 [
@@ -127,96 +221,152 @@ Todos os sinais de entrada são salvos automaticamente neste arquivo:
 ]
 ```
 
-## 🎓 Dicas de Uso
+## 🎓 Usage Tips
 
-### Personalização por Perfil
+### Customization by Profile
 
-**Conservador:**
+**Conservative:**
 ```python
-QUEDA_MINIMA = 7.0
+MIN_DROP = 7.0
 TAKE_PROFIT = 1.5
 STOP_LOSS = 2.0
 ```
 
-**Moderado (padrão):**
+**Moderate (default):**
 ```python
-QUEDA_MINIMA = 5.0
+MIN_DROP = 5.0
 TAKE_PROFIT = 2.0
 STOP_LOSS = 3.0
 ```
 
-**Agressivo:**
+**Aggressive:**
 ```python
-QUEDA_MINIMA = 3.0
+MIN_DROP = 3.0
 TAKE_PROFIT = 3.0
 STOP_LOSS = 4.0
 ```
 
-### Horários Recomendados
+### Recommended Time Windows
 
-- **Manhã (9h-12h):** Maior volatilidade, mais oportunidades
-- **Tarde (14h-17h):** Movimentos mais calmos
-- **Noite (20h-23h):** Influência do mercado americano
+- **Morning (9am-12pm):** Higher volatility, more opportunities
+- **Afternoon (2pm-5pm):** Calmer movements
+- **Night (8pm-11pm):** US market influence
 
-### Backtesting Manual
+### Manual Backtesting
 
-Você pode analisar o histórico editando a data no código:
+You can analyze historical data by editing the date in the code:
 
 ```python
-# No arquivo monitor_btc.py, linha ~200
-# Altere para analisar uma data específica
+# In monitor_btc.py file, around line 200
+# Change to analyze a specific date
 ```
 
-## 🔧 Solução de Problemas
+## 🔧 Troubleshooting
 
-### Erro: "No module named 'requests'"
+### Error: "No module named 'requests'"
 ```bash
 pip install requests
 ```
 
-### Erro: "Connection timeout"
-- Verifique sua conexão com internet
-- A API da Binance pode estar temporariamente indisponível
+### Error: "No module named 'telegram'"
+```bash
+pip install python-telegram-bot
+```
 
-### Muitos alertas falsos
-- Aumente o `QUEDA_MINIMA` no config.py
-- Aumente o score mínimo para entrada (editar linha 200 do código)
+### Error: "Connection timeout"
+- Check your internet connection
+- Binance API might be temporarily unavailable
 
-### Poucos alertas
-- Diminua o `QUEDA_MINIMA`
-- Diminua o `INTERVALO_CHECK` para verificar mais frequentemente
+### Telegram notifications not working
+- Verify bot token is correct
+- Check chat ID is correct
+- Ensure you sent at least one message to your bot
+- Verify `TELEGRAM_ENABLED = True` in config.py
 
-## 📈 Próximos Passos
+### Too many false alerts
+- Increase `MIN_DROP` in config.py
+- Increase minimum score for entry (edit line 277 in the code)
 
-Depois de usar o monitor por alguns dias:
+### Too few alerts
+- Decrease `MIN_DROP`
+- Decrease `CHECK_INTERVAL` to check more frequently
 
-1. **Analise o `signals_log.json`**
-   - Veja quais sinais foram lucrativos
-   - Ajuste os parâmetros com base nos resultados
+### Docker Issues
 
-2. **Adicione notificações**
-   - Telegram: Use a biblioteca `python-telegram-bot`
-   - Email: Use `smtplib`
-   - Som: Use `winsound` (Windows) ou `playsound`
+**Container not starting:**
+```bash
+# Check container status
+docker-compose ps
 
-3. **Automatize ordens**
-   - Integre com API da Binance para executar trades
-   - ⚠️ **Use com EXTREMO CUIDADO!**
+# View detailed logs
+docker-compose logs btc-monitor
+```
 
-## ⚠️ Avisos Importantes
+**Config changes not taking effect:**
+```bash
+# Restart the container after editing config.py
+docker-compose restart
+```
 
-- Este é um **monitor educacional**, não um robô de trading
-- **Sempre analise** os sinais antes de operar
-- Mercado de cripto é **altamente volátil**
-- **Nunca invista** mais do que pode perder
-- Use **stop loss** em todas as operações
-- Este código **NÃO executa trades automaticamente**
+**Container keeps restarting:**
+```bash
+# Check if config.py has valid Telegram credentials
+# View logs for error messages
+docker-compose logs -f btc-monitor
+```
 
-## 📞 Suporte
+**Update the application:**
+```bash
+# Rebuild the Docker image
+docker-compose down
+docker-compose build --no-cache
+docker-compose up -d
+```
 
-Dúvidas? Ajuste os parâmetros no `config.py` e teste!
+## 📱 Telegram Notification Features
+
+When an entry signal is detected, you'll receive a formatted message on Telegram with:
+
+- ⏰ Timestamp
+- 💰 Current price
+- 📊 Technical indicators (MA, RSI, Score)
+- 🔔 All detected signals
+- 💡 Trade suggestion (entry, target, stop loss)
+- 📊 Risk/Reward ratio
+- 📍 Key support and resistance levels
+
+## 📈 Next Steps
+
+After using the monitor for a few days:
+
+1. **Analyze `signals_log.json`**
+   - See which signals were profitable
+   - Adjust parameters based on results
+
+2. **Fine-tune Telegram notifications**
+   - Monitor on your phone
+   - React quickly to opportunities
+   - Keep track of market movements
+
+3. **Automate orders (Advanced)**
+   - Integrate with Binance API to execute trades
+   - ⚠️ **USE WITH EXTREME CAUTION!**
+
+## ⚠️ Important Warnings
+
+- This is an **educational monitor**, not a trading bot
+- **Always analyze** signals before trading
+- Crypto market is **highly volatile**
+- **Never invest** more than you can afford to lose
+- Use **stop loss** in all operations
+- This code **DOES NOT execute trades automatically**
+- Trading cryptocurrencies involves substantial risk
+
+## 📞 Support
+
+Questions? Adjust parameters in `config.py` and test!
 
 ---
 
-**Desenvolvido para estratégia "Buy the Dip 5/3"**  
-*Monitore quedas, compre no suporte, venda na resistência* 🚀
+**Developed for "Buy the Dip 5/3" strategy**
+*Monitor drops, buy at support, sell at resistance* 🚀
