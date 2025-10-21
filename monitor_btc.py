@@ -66,7 +66,7 @@ TELEGRAM_ENABLED = get_config('TELEGRAM_ENABLED', 'TELEGRAM_ENABLED', False, boo
 
 # Legacy compatibility - map old config names to new ones
 CONFIG = {
-    'SYMBOL': 'BTCBRL',
+    'SYMBOL': 'BTCUSDT',
     'QUEDA_MINIMA': MIN_DROP,
     'DISTANCIA_MA': MA_DISTANCE,
     'RSI_OVERSOLD': RSI_OVERSOLD,
