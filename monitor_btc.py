@@ -79,7 +79,7 @@ CONFIG = {
 
 class BinanceMonitor:
     def __init__(self):
-        self.base_url = "https://api.binance.com"
+        self.base_url = "https://api.binance.us"
         self.symbol = CONFIG['SYMBOL']
         self.last_alert_time = None
         self.price_history = []
