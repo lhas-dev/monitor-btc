@@ -6,56 +6,53 @@ Simple script to test if your Telegram bot is configured correctly
 import asyncio
 from btc_monitor.telegram_bot import TelegramNotifier
 from btc_monitor import settings
+from btc_monitor.views.test import (
+    format_test_start,
+    format_telegram_disabled,
+    format_credentials_missing,
+    format_init_bot,
+    format_bot_init_failed,
+    format_bot_init_success,
+    format_sending_test,
+    format_success_message,
+    format_error_message
+)
 
 
 async def test_telegram():
     """Test sending a message via Telegram"""
 
-    print("🧪 Testing Telegram Configuration...\n")
-    print(f"Bot Token: {settings.TELEGRAM_BOT_TOKEN[:20]}... (hidden for security)")
-    print(f"Chat ID: {settings.TELEGRAM_CHAT_ID}")
-    print(f"Enabled: {settings.TELEGRAM_ENABLED}")
-    print("-" * 50)
+    # Print test start info
+    print(format_test_start(
+        settings.TELEGRAM_BOT_TOKEN,
+        settings.TELEGRAM_CHAT_ID,
+        settings.TELEGRAM_ENABLED
+    ))
 
     if not settings.TELEGRAM_ENABLED:
-        print("\n⚠️ Telegram is disabled in .env")
-        print("   Set TELEGRAM_ENABLED=true in your .env file")
+        print(format_telegram_disabled())
         return
 
     if not settings.TELEGRAM_BOT_TOKEN or not settings.TELEGRAM_CHAT_ID:
-        print("\n⚠️ Telegram credentials missing")
-        print("   Add TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID to your .env file")
+        print(format_credentials_missing())
         return
 
-    print("\n1️⃣ Initializing Telegram bot...")
+    print(format_init_bot())
     notifier = TelegramNotifier(settings.TELEGRAM_BOT_TOKEN, settings.TELEGRAM_CHAT_ID)
 
     if not notifier.is_enabled():
-        print("   ❌ Failed to initialize bot")
-        print("\n🔧 Troubleshooting:")
-        print("   1. Verify your bot token is correct")
-        print("   2. Check that your chat ID is correct")
+        print(format_bot_init_failed())
         return
 
-    print("   ✅ Bot initialized successfully")
+    print(format_bot_init_success())
 
-    print("\n2️⃣ Sending test message...")
+    print(format_sending_test())
     success = await notifier.send_test_message()
 
     if success:
-        print("   ✅ Test message sent successfully!")
-        print("\n" + "=" * 50)
-        print("✅ SUCCESS! Check your Telegram app now.")
-        print("=" * 50)
-        print("\nYou should see a test message from your bot.")
-        print("If you received it, your configuration is correct! 🎉")
+        print(format_success_message())
     else:
-        print("   ❌ Failed to send test message")
-        print("\n🔧 Troubleshooting:")
-        print("   1. Verify your bot token is correct")
-        print("   2. Make sure you sent at least one message to your bot")
-        print("   3. Check that your chat ID is correct")
-        print("   4. Ensure you have internet connection")
+        print(format_error_message())
 
 
 def main():

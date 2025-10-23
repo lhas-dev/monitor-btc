@@ -5,6 +5,7 @@ Telegram notification handler
 from telegram import Bot
 from telegram.error import TelegramError
 from typing import Optional
+from btc_monitor.views.telegram import format_trade_signal, format_test_message
 
 
 class TelegramNotifier:
@@ -72,50 +73,10 @@ class TelegramNotifier:
         Returns:
             True if sent successfully
         """
-        message = f"""
-🚨 *{symbol} ENTRY SIGNAL DETECTED* 🚨
-
-⏰ Time: {analysis['timestamp']}
-💰 Current Price: USD {analysis['price']:,.2f}
-
-📊 *INDICATORS:*
-• MA{ma_period}: USD {analysis['ma']:,.2f} ({analysis['ma_distance']:+.2f}%)
-• RSI(14): {analysis['rsi']:.1f}
-• Score: {analysis['score']}/7
-
-🔔 *DETECTED SIGNALS:*
-"""
-        for signal in analysis['signals']:
-            message += f"• {signal}\n"
-
-        message += f"""
-💡 *TRADE SUGGESTION:*
-🔹 ENTRY: USD {analysis['price']:,.2f}
-🎯 TARGET: USD {analysis['target_price']:,.2f} (+{analysis['profit_percent']:.2f}%)
-🛑 STOP LOSS: USD {analysis['stop_loss']:,.2f} (-{analysis['stop_percent']:.2f}%)
-
-📊 Risk/Reward: 1:{analysis['profit_percent'] / analysis['stop_percent']:.2f}
-
-📍 *KEY LEVELS:*
-Resistances: {', '.join([f'USD {r:,.0f}' for r in analysis['resistances'][:3]])}
-Supports: {', '.join([f'USD {s:,.0f}' for s in analysis['supports'][:3]])}
-"""
+        message = format_trade_signal(analysis, symbol, ma_period)
         return await self.send_message(message)
 
     async def send_test_message(self) -> bool:
         """Send a test message to verify configuration"""
-        message = """
-🧪 *Telegram Test Message*
-
-✅ Your BTC Monitor is successfully connected to Telegram!
-
-This is what notifications will look like when a trading signal is detected.
-
-*Configuration Status:*
-• Bot Token: ✅ Valid
-• Chat ID: ✅ Connected
-• Notifications: ✅ Enabled
-
-You're all set! 🚀
-"""
+        message = format_test_message()
         return await self.send_message(message)
