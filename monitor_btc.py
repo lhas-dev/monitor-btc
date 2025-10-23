@@ -262,7 +262,7 @@ class BinanceMonitor:
         for support in supports:
             diff_support = ((current_price - support) / support) * 100
             if -2 <= diff_support <= 2:  # Within 2% of support
-                analysis['signals'].append(f"🟡 NEAR SUPPORT: R$ {support:,.2f}")
+                analysis['signals'].append(f"🟡 NEAR SUPPORT: USD {support:,.2f}")
                 analysis['score'] += 1
                 break
 
@@ -320,10 +320,10 @@ class BinanceMonitor:
 🚨 *BTC/BRL ENTRY SIGNAL DETECTED* 🚨
 
 ⏰ Time: {analysis['timestamp']}
-💰 Current Price: R$ {analysis['price']:,.2f}
+💰 Current Price: USD {analysis['price']:,.2f}
 
 📊 *INDICATORS:*
-• MA{CONFIG['PERIODO_MA']}: R$ {analysis['ma']:,.2f} ({analysis['ma_distance']:+.2f}%)
+• MA{CONFIG['PERIODO_MA']}: USD {analysis['ma']:,.2f} ({analysis['ma_distance']:+.2f}%)
 • RSI(14): {analysis['rsi']:.1f}
 • Score: {analysis['score']}/7
 
@@ -334,15 +334,15 @@ class BinanceMonitor:
 
             message += f"""
 💡 *TRADE SUGGESTION:*
-🔹 ENTRY: R$ {analysis['price']:,.2f}
-🎯 TARGET: R$ {analysis['target_price']:,.2f} (+{analysis['profit_percent']:.2f}%)
-🛑 STOP LOSS: R$ {analysis['stop_loss']:,.2f} (-{analysis['stop_percent']:.2f}%)
+🔹 ENTRY: USD {analysis['price']:,.2f}
+🎯 TARGET: USD {analysis['target_price']:,.2f} (+{analysis['profit_percent']:.2f}%)
+🛑 STOP LOSS: USD {analysis['stop_loss']:,.2f} (-{analysis['stop_percent']:.2f}%)
 
 📊 Risk/Reward: 1:{analysis['profit_percent'] / analysis['stop_percent']:.2f}
 
 📍 *KEY LEVELS:*
-Resistances: {', '.join([f'R$ {r:,.0f}' for r in analysis['resistances'][:3]])}
-Supports: {', '.join([f'R$ {s:,.0f}' for s in analysis['supports'][:3]])}
+Resistances: {', '.join([f'USD {r:,.0f}' for r in analysis['resistances'][:3]])}
+Supports: {', '.join([f'USD {s:,.0f}' for s in analysis['supports'][:3]])}
 """
 
             # Send message
@@ -362,11 +362,11 @@ Supports: {', '.join([f'R$ {s:,.0f}' for s in analysis['supports'][:3]])}
         """Print formatted analysis"""
         print("\n" + "="*80)
         print(f"⏰ {analysis['timestamp']}")
-        print(f"💰 CURRENT PRICE: R$ {analysis['price']:,.2f}")
+        print(f"💰 CURRENT PRICE: USD {analysis['price']:,.2f}")
         print("="*80)
 
         print(f"\n📊 INDICATORS:")
-        print(f"   MA{CONFIG['PERIODO_MA']}: R$ {analysis['ma']:,.2f} ({analysis['ma_distance']:+.2f}%)")
+        print(f"   MA{CONFIG['PERIODO_MA']}: USD {analysis['ma']:,.2f} ({analysis['ma_distance']:+.2f}%)")
         print(f"   RSI(14): {analysis['rsi']:.1f}")
 
         if analysis['signals']:
@@ -375,15 +375,15 @@ Supports: {', '.join([f'R$ {s:,.0f}' for s in analysis['supports'][:3]])}
                 print(f"   {signal}")
 
         print(f"\n📍 KEY LEVELS:")
-        print(f"   Resistances: {', '.join([f'R$ {r:,.0f}' for r in analysis['resistances'][:3]])}")
-        print(f"   Supports: {', '.join([f'R$ {s:,.0f}' for s in analysis['supports'][:3]])}")
+        print(f"   Resistances: {', '.join([f'USD {r:,.0f}' for r in analysis['resistances'][:3]])}")
+        print(f"   Supports: {', '.join([f'USD {s:,.0f}' for s in analysis['supports'][:3]])}")
 
         if analysis['entry_signal']:
             print(f"\n{'🟢 ENTRY OPPORTUNITY DETECTED! 🟢':^80}")
             print(f"\n💡 TRADE SUGGESTION:")
-            print(f"   🔹 ENTRY: R$ {analysis['price']:,.2f}")
-            print(f"   🎯 TARGET: R$ {analysis['target_price']:,.2f} (+{analysis['profit_percent']:.2f}%)")
-            print(f"   🛑 STOP: R$ {analysis['stop_loss']:,.2f} (-{analysis['stop_percent']:.2f}%)")
+            print(f"   🔹 ENTRY: USD {analysis['price']:,.2f}")
+            print(f"   🎯 TARGET: USD {analysis['target_price']:,.2f} (+{analysis['profit_percent']:.2f}%)")
+            print(f"   🛑 STOP: USD {analysis['stop_loss']:,.2f} (-{analysis['stop_percent']:.2f}%)")
 
             risk_reward = analysis['profit_percent'] / analysis['stop_percent']
             print(f"   📊 RISK/REWARD: 1:{risk_reward:.2f}")
