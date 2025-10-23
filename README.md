@@ -1,10 +1,10 @@
-# 🤖 Automated BTC/BRL Monitor - Binance
+# 🤖 Automated BTC Monitor - Binance
 
 Automated system to identify Bitcoin buying opportunities using **Buy the Dip strategy** combined with technical indicators (Moving Average, RSI, Support/Resistance levels).
 
 ## 🎯 Overview
 
-This monitor analyzes BTC/BRL price movements on Binance and detects optimal entry points by:
+This monitor analyzes Bitcoin price movements on Binance and detects optimal entry points by:
 
 - Monitoring significant price drops (Buy the Dip)
 - Analyzing moving averages and RSI indicators
@@ -42,11 +42,12 @@ This monitor analyzes BTC/BRL price movements on Binance and detects optimal ent
 
 ## ⚙️ Configuration
 
-Edit the `.env` file to customize your strategy and credentials:
+All configuration is done via the `.env` file (no config.py needed). Edit the `.env` file to customize your strategy and credentials:
 
 ### Strategy Parameters
 
 ```bash
+SYMBOL=BTCUSDT            # Trading pair to monitor
 MIN_DROP=5.0              # Alert when price drops 5% in 24h
 MA_DISTANCE=3.0           # Alert when price is 3% below moving average
 RSI_OVERSOLD=30           # RSI below 30 = oversold

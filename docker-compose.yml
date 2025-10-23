@@ -8,9 +8,8 @@ services:
     container_name: btc-monitor
     restart: unless-stopped
 
-    # Mount config and logs
+    # Mount logs and data
     volumes:
-      - ./config.py:/app/config.py:ro  # Read-only config
       - ./signals_log.json:/app/signals_log.json  # Persistent signal logs
       - ./logs:/app/logs  # Application logs
 
