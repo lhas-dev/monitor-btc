@@ -24,9 +24,5 @@ RUN mkdir -p /app/logs
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 
-# Health check
-HEALTHCHECK --interval=5m --timeout=10s --start-period=30s --retries=3 \
-  CMD python -c "import requests; requests.get('https://api.binance.com/api/v3/ping', timeout=5)" || exit 1
-
 # Run the monitor
 CMD ["python", "-u", "monitor.py"]
