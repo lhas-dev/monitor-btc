@@ -46,10 +46,12 @@ README.md
 *.md
 
 # Test files
+tests/                # Unit tests directory (not needed in container)
 test_*.py
 !test_telegram.py  # Exception: Include test_telegram.py (needed for container testing)
 debug_*.py
 analise_*.py
+requirements-dev.txt  # Development dependencies
 
 # Other
 *.bak

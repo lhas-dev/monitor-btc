@@ -3,7 +3,7 @@ Test Telegram Notification
 Simple script to test if your Telegram bot is configured correctly
 """
 
-import asyncio
+import pytest
 from btc_monitor.telegram_bot import TelegramNotifier
 from btc_monitor import settings
 from btc_monitor.views.test import (
@@ -18,7 +18,7 @@ from btc_monitor.views.test import (
     format_error_message
 )
 
-
+@pytest.mark.asyncio
 async def test_telegram():
     """Test sending a message via Telegram"""
 
@@ -56,7 +56,7 @@ async def test_telegram():
 
 
 def main():
-    asyncio.run(test_telegram())
+    run(test_telegram())
 
 
 if __name__ == "__main__":
