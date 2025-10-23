@@ -9,7 +9,8 @@ services:
     restart: unless-stopped
 
     volumes:
-      - ./signals_log.json:/app/signals_log.json # Persistent signal logs
+      - ./signals_*.json:/app/signals_*.json # Persistent signal logs (multi-symbol support)
+      - .:/app # Mount entire directory for all signal files
 
     env_file:
       - .env

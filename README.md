@@ -4,8 +4,9 @@ Automated system to identify Bitcoin buying opportunities using **Buy the Dip st
 
 ## 🎯 Overview
 
-This monitor analyzes Bitcoin price movements on Binance and detects optimal entry points by:
+This monitor analyzes cryptocurrency price movements on Binance and detects optimal entry points by:
 
+- **Multi-symbol support**: Monitor multiple trading pairs in parallel (BTC, BNB, ETH, etc.)
 - Monitoring significant price drops (Buy the Dip)
 - Analyzing moving averages and RSI indicators
 - Calculating support and resistance levels from historical data
@@ -47,7 +48,9 @@ All configuration is done via the `.env` file. Edit the `.env` file to customize
 ### Strategy Parameters
 
 ```bash
-SYMBOL=BTCUSDT            # Trading pair to monitor
+# Single symbol: SYMBOL=BTCUSDT
+# Multiple symbols (parallel monitoring): SYMBOL=BTCUSDT,BNBUSDT,ETHUSDT
+SYMBOL=BTCUSDT            # Trading pair(s) to monitor
 MIN_DROP=5.0              # Alert when price drops 5% in 24h
 MA_DISTANCE=3.0           # Alert when price is 3% below moving average
 RSI_OVERSOLD=30           # RSI below 30 = oversold
@@ -102,6 +105,30 @@ All parameters are configured via `.env` file:
    TELEGRAM_BOT_TOKEN=123456789:ABCdefGHIjklMNOpqrsTUVwxyz
    TELEGRAM_CHAT_ID=123456789
    ```
+
+## 🔄 Multi-Symbol Monitoring
+
+The monitor supports tracking multiple trading pairs simultaneously in a single process:
+
+### How It Works
+- Each symbol runs in its own async task (parallel execution)
+- Independent signal logs per symbol: `signals_BTCUSDT.json`, `signals_BNBUSDT.json`, etc.
+- Shared Telegram notifications for all symbols
+- Isolated error handling (one symbol failure won't affect others)
+
+### Configuration Example
+```bash
+# Monitor Bitcoin, Binance Coin, and Ethereum simultaneously
+SYMBOL=BTCUSDT,BNBUSDT,ETHUSDT
+```
+
+### Console Output
+When monitoring multiple symbols, each log line is prefixed with the symbol:
+```
+[BTCUSDT] 📊 Price: $98,450.00 | 24h: -2.5% | Score: 2/8
+[BNBUSDT] 📊 Price: $645.30 | 24h: +1.2% | Score: 0/8
+[ETHUSDT] 📊 Price: $3,421.50 | 24h: -3.1% | Score: 3/8
+```
 
 ## 🏃 Usage
 

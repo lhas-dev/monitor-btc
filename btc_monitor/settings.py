@@ -29,7 +29,12 @@ def get_env(key: str, default=None, value_type=str):
 
 
 # === TRADING SYMBOL ===
-SYMBOL = get_env('SYMBOL', 'BTCUSDT')
+# Parse comma-separated symbols into a list
+_symbol_str = get_env('SYMBOL', 'BTCUSDT')
+SYMBOLS = [s.strip().upper() for s in _symbol_str.split(',') if s.strip()]
+
+# Keep SYMBOL for backward compatibility (first symbol in list)
+SYMBOL = SYMBOLS[0] if SYMBOLS else 'BTCUSDT'
 
 # === DETECTION PARAMETERS ===
 MIN_DROP = get_env('MIN_DROP', 5.0, float)

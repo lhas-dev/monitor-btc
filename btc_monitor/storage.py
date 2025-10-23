@@ -10,14 +10,20 @@ from typing import List, Dict
 class SignalStorage:
     """Simple JSON storage for trading signals"""
 
-    def __init__(self, filepath: str = 'signals_log.json'):
+    def __init__(self, symbol: str = None, filepath: str = None):
         """
         Initialize storage
 
         Args:
-            filepath: Path to JSON log file
+            symbol: Trading symbol (e.g., BTCUSDT) - will create symbol-specific file
+            filepath: Path to JSON log file (overrides symbol-based naming)
         """
-        self.filepath = filepath
+        if filepath:
+            self.filepath = filepath
+        elif symbol:
+            self.filepath = f'signals_{symbol}.json'
+        else:
+            self.filepath = 'signals_log.json'
 
     def save_signal(self, signal: Dict) -> bool:
         """
