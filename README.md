@@ -42,7 +42,7 @@ This monitor analyzes Bitcoin price movements on Binance and detects optimal ent
 
 ## ⚙️ Configuration
 
-All configuration is done via the `.env` file (no config.py needed). Edit the `.env` file to customize your strategy and credentials:
+All configuration is done via the `.env` file. Edit the `.env` file to customize your strategy and credentials:
 
 ### Strategy Parameters
 
