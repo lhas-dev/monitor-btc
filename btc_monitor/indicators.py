@@ -108,7 +108,8 @@ def find_drops_advanced(df: pd.DataFrame, min_drop: float = 5.0) -> pd.DataFrame
 
 def analyze_opportunity(current_price: float, stats_24h: dict, df_historical: pd.DataFrame,
                        min_drop: float, ma_distance: float, rsi_oversold: int,
-                       ma_period: int, stop_loss: float, take_profit: float) -> dict:
+                       ma_period: int, stop_loss: float, take_profit: float,
+                       max_take_profit: float = 5.0, resistance_factor: float = 0.6) -> dict:
     """
     Analyze if there's a trading opportunity based on indicators
 
@@ -162,7 +163,7 @@ def analyze_opportunity(current_price: float, stats_24h: dict, df_historical: pd
             analysis['score'] += 1
             break
 
-    # 5. Calculate target price (next resistance)
+    # 5. Calculate target price (hybrid approach: partial resistance + cap)
     target_resistance = None
     for resistance in sorted(resistances):
         if resistance > current_price:
@@ -170,15 +171,28 @@ def analyze_opportunity(current_price: float, stats_24h: dict, df_historical: pd
             break
 
     if target_resistance:
-        profit_percent = ((target_resistance - current_price) / current_price) * 100
-        if profit_percent >= take_profit:
-            analysis['target_price'] = target_resistance
-            analysis['profit_percent'] = profit_percent
+        # Calculate distance to resistance
+        distance_to_resistance = target_resistance - current_price
 
-    # If no resistance found, use fixed percentage
+        # Use partial distance (default 60%)
+        partial_target = current_price + (distance_to_resistance * resistance_factor)
+
+        # Apply maximum profit cap
+        max_target = current_price * (1 + max_take_profit / 100)
+        final_target = min(partial_target, max_target)
+        final_profit = ((final_target - current_price) / current_price) * 100
+
+        # Only use if meets minimum threshold
+        if final_profit >= take_profit:
+            analysis['target_price'] = final_target
+            analysis['profit_percent'] = final_profit
+
+    # If no resistance found or target too low, use capped percentage
     if not analysis['target_price']:
-        analysis['target_price'] = current_price * (1 + take_profit / 100)
-        analysis['profit_percent'] = take_profit
+        # Use minimum of (TAKE_PROFIT or MAX_TAKE_PROFIT)
+        target_percent = min(take_profit, max_take_profit)
+        analysis['target_price'] = current_price * (1 + target_percent / 100)
+        analysis['profit_percent'] = target_percent
 
     # 6. Calculate stop loss (next support or fixed %)
     stop_support = None

@@ -53,10 +53,32 @@ MA_DISTANCE=3.0           # Alert when price is 3% below moving average
 RSI_OVERSOLD=30           # RSI below 30 = oversold
 MA_PERIOD=7               # 7-day moving average
 STOP_LOSS=3.0             # 3% stop loss
-TAKE_PROFIT=2.0           # Minimum 2% profit target
+TAKE_PROFIT=2.0           # Minimum 2% profit target (threshold)
+MAX_TAKE_PROFIT=5.0       # Maximum 5% profit target cap (conservative)
+RESISTANCE_FACTOR=0.6     # Use 60% distance to resistance (0.5-0.7)
 CHECK_INTERVAL=300        # Check every 5 minutes (in seconds)
 HISTORICAL_DAYS=90        # Days of historical data to analyze
 ```
+
+#### 🎯 Conservative Target Calculation
+
+The system uses a **hybrid approach** for calculating profit targets:
+
+1. **Finds next resistance level** above current price
+2. **Uses partial distance** (60% by default via `RESISTANCE_FACTOR`)
+3. **Applies maximum cap** (5% by default via `MAX_TAKE_PROFIT`)
+
+**Example:**
+- Current Price: $100,000
+- Next Resistance: $108,000 (+8%)
+- Partial Target (60%): $100,000 + ($8,000 × 0.6) = $104,800 (+4.8%) ✅
+- Max Cap Check: 4.8% < 5% → Target: $104,800
+
+This approach provides **realistic, conservative targets** instead of aggressive resistance levels.
+
+**Tuning:**
+- `RESISTANCE_FACTOR=0.5-0.7` → Lower = more conservative
+- `MAX_TAKE_PROFIT=3-7` → Adjust based on market volatility
 
 ### Telegram Configuration
 

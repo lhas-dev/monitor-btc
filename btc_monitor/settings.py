@@ -39,7 +39,9 @@ MA_PERIOD = get_env('MA_PERIOD', 7, int)
 
 # === RISK MANAGEMENT ===
 STOP_LOSS = get_env('STOP_LOSS', 3.0, float)
-TAKE_PROFIT = get_env('TAKE_PROFIT', 2.0, float)
+TAKE_PROFIT = get_env('TAKE_PROFIT', 2.0, float)  # Minimum profit threshold
+MAX_TAKE_PROFIT = get_env('MAX_TAKE_PROFIT', 5.0, float)  # Maximum profit target cap
+RESISTANCE_FACTOR = get_env('RESISTANCE_FACTOR', 0.6, float)  # Partial distance to resistance (0.5-0.7)
 
 # === MONITORING ===
 CHECK_INTERVAL = get_env('CHECK_INTERVAL', 300, int)

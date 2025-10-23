@@ -75,7 +75,9 @@ def run_monitor():
                 rsi_oversold=settings.RSI_OVERSOLD,
                 ma_period=settings.MA_PERIOD,
                 stop_loss=settings.STOP_LOSS,
-                take_profit=settings.TAKE_PROFIT
+                take_profit=settings.TAKE_PROFIT,
+                max_take_profit=settings.MAX_TAKE_PROFIT,
+                resistance_factor=settings.RESISTANCE_FACTOR
             )
 
             # Print analysis
