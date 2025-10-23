@@ -47,6 +47,7 @@ README.md
 
 # Test files
 test_*.py
+!test_telegram.py  # Exception: Include test_telegram.py (needed for container testing)
 debug_*.py
 analise_*.py
 

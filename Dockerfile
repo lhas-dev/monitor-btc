@@ -15,11 +15,8 @@ COPY requirements.txt .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy package and application files
-COPY btc_monitor/ ./btc_monitor/
-COPY monitor.py .
-COPY backtest.py .
-COPY test_telegram.py .
+# Copy entire codebase (filtered by .dockerignore)
+COPY . .
 
 # Create directory for logs
 RUN mkdir -p /app/logs

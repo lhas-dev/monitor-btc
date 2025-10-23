@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   btc-monitor:
@@ -10,8 +10,7 @@ services:
 
     # Mount logs and data
     volumes:
-      - ./signals_log.json:/app/signals_log.json  # Persistent signal logs
-      - ./logs:/app/logs  # Application logs
+      - ./signals_log.json:/app/signals_log.json # Persistent signal logs
 
     # Load environment variables from .env file
     env_file:
@@ -19,7 +18,7 @@ services:
 
     # Environment variables (optional - can override .env values)
     environment:
-      - TZ=America/Sao_Paulo  # Set your timezone
+      - TZ=America/Sao_Paulo # Set your timezone
       # Uncomment to override .env values:
       # - MIN_DROP=5.0
       # - CHECK_INTERVAL=300
@@ -39,15 +38,21 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
+          cpus: "0.5"
           memory: 512M
         reservations:
-          cpus: '0.25'
+          cpus: "0.25"
           memory: 256M
 
     # Health check
     healthcheck:
-      test: ["CMD", "python", "-c", "import requests; requests.get('https://api.binance.com/api/v3/ping', timeout=5)"]
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import requests; requests.get('https://api.binance.com/api/v3/ping', timeout=5)",
+        ]
       interval: 5m
       timeout: 10s
       retries: 3
